@@ -1,30 +1,90 @@
 #include <stdio.h>
-#include "Modulos/ingrediente.c"
-#include "Modulos/pizza.c"
+#include <ctype.h>
+#include <stdlib.h>
+#include "Headers/ingrediente.h"
 #include "Headers/pizza.h"
 
-int main(){
-    
-    char escolha [10];
+void escolher(char escolha1, ingrediente** listaIng, pizzas** listaPizza, int* tamIng, int* tamPiz);
 
-    printf("Bem-Vindo ao programa da Pizzaria QUIJU");
+int main() {
+    char escolha;
+    ingrediente *listaIng = malloc(sizeof(ingrediente));
+    pizzas *listaPizza = malloc(sizeof(pizzas));
+    int tamIng = 1;
+    int tamPiz = 1;
 
-    printf("Para utilizar as funcoes do programa digite CREATE para adicionar tanto pizzas quanto ingredientes READ");
-    printf(" para ler ingredientes ou pizzas, UPDATE para editar um dado, DELETE para deletar um ingrediente ou pizza\n");
+    printf("\nBem-Vindo ao programa da Pizzaria QUIJU\n");
 
-    scanf("%s", escolha);
+    printf("\nPara utilizar as funcoes do programa digite C caso queira adicionar tanto pizzas quanto ingredientes, R caso queira ler ingredientes ou pizzas,\nU caso queira editar um dado e D caso queira deletar um ingrediente ou pizza:\n");
 
-    for(int i = 0; i < sizeof(escolha); i++){
-        escolha[i] = toupper(escolha[i]);
+    scanf(" %c", &escolha);
+    escolha = toupper(escolha);
+
+    while (escolha == 'C' || escolha == 'R' || escolha == 'U' || escolha == 'D') {
+        escolher(escolha, &listaIng, &listaPizza, &tamIng, &tamPiz);
+
+        printf("\nNovamente caso queira utilizar as funcoes digite C para adicionar, R para ler, U para editar e D para deletar\n");
+        scanf(" %c", &escolha);
+        escolha = toupper(escolha);
     }
 
-    getchar();
+    return 0;
+}
 
-    while(escolha == "CREATE" && escolha == "UPDATE" && escolha == "READ" && escolha == "DELETE"){
+void escolher(char escolha1, ingrediente** listaIng, pizzas** listaPizza, int* tamIng, int* tamPiz){
 
-        printf("\n Voce quer fazer isso para um ingrediente ou para uma pizza? (ING) (PIZZA)")
+    char escolha2;
+    int idUpdate, idDelete;
 
+    printf("\nVoce quer fazer isso para um ingrediente ou para uma pizza? (I), (P)\n");
+    scanf(" %c", &escolha2);
+    escolha2 = toupper(escolha2);
+    getchar();  
+    printf("\n");
+
+    switch (escolha1) {
+        case 'C': // Criar
+            if (escolha2 == 'I') {
+                AddIngredientes(listaIng, tamIng); 
+            } else if (escolha2 == 'P') {
+                AddPizza(listaPizza, tamPiz, *listaIng, tamIng); 
+            }
+            break;
+
+        case 'R': 
+            if (escolha2 == 'I') {
+                ReadIngredientes(tamIng, *listaIng); 
+            } else if (escolha2 == 'P') {
+                ReadPizza(tamPiz, *listaPizza); 
+            }
+            break;
+
+        case 'U': 
+            if (escolha2 == 'I') {
+                printf("Escolha o id do ingrediente que voce quer editar:\n");
+                scanf("%d", &idUpdate);
+                UpdateIngredientes(&(*listaIng)[idUpdate]);
+            } else if (escolha2 == 'P') {
+                printf("Escolha o id da pizza que voce quer editar:\n");
+                scanf("%d", &idUpdate);
+                UpdatePizzas(&(*listaPizza)[idUpdate]);
+            }
+            break;
+
+        case 'D': 
+            if (escolha2 == 'I') {
+                printf("Escolha o id do ingrediente que voce quer deletar:\n");
+                scanf("%d", &idDelete);
+                DeleteIngredientes(&(*listaIng)[idUpdate]);
+            } else if (escolha2 == 'P') {
+                printf("Escolha o id da pizza que voce quer deletar:\n");
+                scanf("%d", &idDelete);
+                DeletePizzas(&(*listaPizza)[idUpdate]);
+            }
+            break;
+
+        default:
+            printf("Opção inválida.\n");
+            break;
     }
-
-
 }

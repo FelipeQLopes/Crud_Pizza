@@ -1,7 +1,15 @@
-typedef struct ingrediente{
+#ifndef INGREDIENTE_H
+#define INGREDIENTE_H
 
+typedef struct ingrediente {
     int id;
-    char nome[30];
+    char nome[50];
     float preco;
+} ingrediente;
 
-}ingrediente;
+void AddIngredientes(ingrediente** listaIng, int* tamIng);
+int ReadIngredientes(int* tamIng, ingrediente* listaIng);
+void UpdateIngredientes(ingrediente* ing);
+void DeleteIngredientes(ingrediente* ing);
+
+#endif // INGREDIENTE_H

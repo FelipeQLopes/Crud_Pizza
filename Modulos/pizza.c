@@ -1,58 +1,156 @@
 #include "../Headers/pizza.h"
+#include "../Headers/ingrediente.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <string.h>
 
 int pizzaId = 0;
 
-void AddPizza(pizzas pizza, ingrediente *listadeIng){
+void AddPizza(pizzas** listaPizza, int* tamPiz, ingrediente* listaIng, int* tamIng) {
+    pizzaId++;
+    int novoTam = *tamPiz + 1;
 
-    int escolhaIng, i = 0, cont = 0;
-    char resposta;
+    // Realocar memória para a lista de pizzas
+    pizzas* novaLista = realloc(*listaPizza, sizeof(pizzas) * novoTam);
+    if (!novaLista) {
+        printf("Erro ao realocar memória para pizzas.\n");
+        return;
+    }
 
-    calcId++;
-    pizza.id = calcId;
+    *listaPizza = novaLista;
+    *tamPiz = novoTam;
 
-    ingrediente *pizzaIng = (ingrediente *)malloc(sizeof(ingrediente) * 10);
+    // Apontar para a nova pizza
+    pizzas* novaPizza = &(*listaPizza)[novoTam - 1];
+    novaPizza->id = pizzaId;
 
+    // Preencher informações da nova pizza
     printf("Digite o nome da pizza: ");
-    scanf("%[^\n]", pizza.nome);
-    printf("Digite o tamanho da pizza ( P, M, G): ");
-    scanf("%c", &pizza.tamanho);
+    scanf(" %[^\n]", novaPizza->nome);
+    getchar();
+    printf("Digite o tamanho da pizza (P, M, G): ");
+    scanf("%c", &novaPizza->tamanho);
+    novaPizza->tamanho = toupper(novaPizza->tamanho);
+    getchar();
     printf("Digite o preco da pizza: ");
-    scanf("%f", &pizza.preco);
+    scanf("%f", &novaPizza->preco);
+    getchar();
 
-    printf("Voce quer ver a lista de ingredientes? (S/N)");
-    scanf("%c", &resposta);
+    // Exibir lista de ingredientes disponíveis
+    int qtdIng = ReadIngredientes(tamIng, listaIng);
+
+    // Alocar espaço para os ingredientes da pizza
+    novaPizza->ing = malloc(sizeof(ingrediente) * 10);
+    if (!novaPizza->ing) {
+        printf("Erro ao alocar memória para os ingredientes da pizza.\n");
+        return;
+    }
+    novaPizza->num_ingredientes = 0;
+
+    // Escolher ingredientes
+    printf("\nAgora escolha até 10 ingredientes para sua pizza.\n");
+    printf("(Escolha digitando o ID dos ingredientes, ou um ID inválido para finalizar):\n");
+
+    int escolhaIng;
+    while (novaPizza->num_ingredientes < 10) {
+        printf("Escolha o ID do ingrediente: ");
+        scanf("%d", &escolhaIng);
+
+        if (escolhaIng < 0 || escolhaIng >= qtdIng) {
+            break;
+        }
+
+        novaPizza->ing[novaPizza->num_ingredientes] = listaIng[escolhaIng];
+        novaPizza->num_ingredientes++;
+    }
+
+    printf("Pizza adicionada com sucesso!\n");
+}
+
+
+int ReadPizza(int* tamPiz, pizzas* listaPizza) {
+    char resposta;
+    int respostaId;
+
+    printf("\nVoce quer ver a lista de pizzas? (S/N)\n");
+    scanf(" %c", &resposta);
+    getchar();
 
     resposta = toupper(resposta);
 
-    if(resposta = 'S'){
-
-        for( i = 1 ; i <= sizeof(listadeIng)/sizeof(ingrediente); i++){
-
-            printf("ID: %d, Ingrediente: %s \n", listadeIng[i].id, listadeIng[i].nome);
-
+    if (resposta == 'S') {
+        for (int i = 1; i < *tamPiz; i++) {
+            printf("ID: %-3.d, Pizza: %-25s, Tamanho: %-5.c Preco: R$ %-5.2f\n", listaPizza[i].id, listaPizza[i].nome, listaPizza[i].tamanho, listaPizza[i].preco);
         }
     }
 
-    printf("Agora escolha ate 10 ingredientes para sua pizza. \n");
-    printf("(Escolha digitando o ID dos ingredientes separado por Espacos ou ENTER, \n para finalizar a operacao digite um id que nao exista)\n");
+    printf("\nVoce quer ver os ingredientes de alguma pizza? (S/N)\n");
+    scanf(" %c", &resposta);
+    getchar();
 
-    scanf("%d", &escolhaIng);
+    resposta = toupper(resposta);
 
-    while(escolhaIng > 0 && escolhaIng < i && cont < 10){
+    if (resposta == 'S') {
+        printf("\nDigite o ID da pizza que voce quer:\n");
+        scanf("%d", &respostaId);
+        for(int k = 0; k < listaPizza[respostaId].num_ingredientes; k++){
 
-        scanf("%d", &pizzaIng[cont].id);
+            printf("Ingrediente %2d: %-25s\n", k + 1, listaPizza[respostaId].ing[k].nome);
 
-        cont++;
-
-        scanf("%d", &escolhaIng);
+        }
 
     }
 
-    printf("Pizza Adicionada\n");
+    return *tamPiz;
+}
+
+void UpdatePizzas(pizzas* piz){
+
+    int escolhaTipo, qtdIngEdit;
+    char nomeEdit[50], tamanhoEdit;
+    float precoEdit;
+
+    printf("\nDigite o numero do que voce quer editar desse ingrediente:\n");
+    printf("\t1 para o NOME \t 2 para o TAMANHO \t 3 para o PRECO\n");
+    scanf("%d", &escolhaTipo);
+
+    switch(escolhaTipo){
+
+        case 1:
+            printf("Digite o novo nome:\n");
+            scanf(" %[^\n]", nomeEdit);
+            strcpy(piz->nome, nomeEdit);
+            printf("\nNome Atualizado com Sucesso!\n");
+
+            break;
+
+        case 2:
+            printf("Digite o novo tamanho:");
+            scanf("%c", &tamanhoEdit);
+            piz->tamanho = tamanhoEdit;
+            printf("\nTamanho Atualizado com Sucesso!\n");
+        
+            break;
+        
+        case 3:
+            printf("Digite o novo preco:");
+            scanf("%f", &precoEdit);
+            piz->preco = precoEdit;
+            printf("\nPreco Atualizado com Sucesso!\n");
+        
+            break;
+
+    }
+
+}
+
+
+void DeletePizza(pizzas* piz) {
+    
+    
+    printf("\nNAO ESTA FUNCIONANDO AINDA\n");
     
 }
 
