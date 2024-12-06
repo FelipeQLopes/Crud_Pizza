@@ -12,7 +12,6 @@ void AddPizza(pizzas** listaPizza, int* tamPiz, ingrediente* listaIng, int* tamI
     pizzaId++;
     int novoTam = *tamPiz + 1;
 
-    // Realocar memória para a lista de pizzas
     pizzas* novaLista = realloc(*listaPizza, sizeof(pizzas) * novoTam);
     if (!novaLista) {
         printf("Erro ao realocar memória para pizzas.\n");
@@ -22,11 +21,9 @@ void AddPizza(pizzas** listaPizza, int* tamPiz, ingrediente* listaIng, int* tamI
     *listaPizza = novaLista;
     *tamPiz = novoTam;
 
-    // Apontar para a nova pizza
     pizzas* novaPizza = &(*listaPizza)[novoTam - 1];
     novaPizza->id = pizzaId;
 
-    // Preencher informações da nova pizza
     printf("Digite o nome da pizza: ");
     scanf(" %[^\n]", novaPizza->nome);
     getchar();
@@ -38,10 +35,8 @@ void AddPizza(pizzas** listaPizza, int* tamPiz, ingrediente* listaIng, int* tamI
     scanf("%f", &novaPizza->preco);
     getchar();
 
-    // Exibir lista de ingredientes disponíveis
     int qtdIng = ReadIngredientes(tamIng, listaIng);
 
-    // Alocar espaço para os ingredientes da pizza
     novaPizza->ing = malloc(sizeof(ingrediente) * 10);
     if (!novaPizza->ing) {
         printf("Erro ao alocar memória para os ingredientes da pizza.\n");
@@ -49,7 +44,6 @@ void AddPizza(pizzas** listaPizza, int* tamPiz, ingrediente* listaIng, int* tamI
     }
     novaPizza->num_ingredientes = 0;
 
-    // Escolher ingredientes
     printf("\nAgora escolha até 10 ingredientes para sua pizza.\n");
     printf("(Escolha digitando o ID dos ingredientes, ou um ID inválido para finalizar):\n");
 
@@ -147,10 +141,17 @@ void UpdatePizzas(pizzas* piz){
 }
 
 
-void DeletePizza(pizzas* piz) {
+void DeletePizzas(pizzas* piz) {
     
-    
-    printf("\nNAO ESTA FUNCIONANDO AINDA\n");
+    char* a = "DELETADO";
+
+    piz->id = 0;
+    strcpy(piz->nome,a);
+    piz->tamanho = 0;
+    piz->preco = 0;
+    piz->num_ingredientes = 0;
+
+    printf("\nPizza deletada com Sucesso!\n");
     
 }
 

@@ -18,4 +18,4 @@ int ReadPizza(int* tamPiz, pizzas* listaPizza);
 void UpdatePizzas(pizzas* piz);
 void DeletePizzas(pizzas* piz);
 
-#endif // PIZZA_H
+#endif

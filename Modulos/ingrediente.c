@@ -11,13 +11,11 @@ void AddIngredientes(ingrediente** listaIng, int* tamIng) {
     calcId++;
     int novoTam = *tamIng + 1;
 
-    // Realocar memória
     ingrediente* novaLista = realloc(*listaIng, sizeof(ingrediente) * novoTam);
 
     *listaIng = novaLista;
     *tamIng = novoTam;
 
-    // Adicionar novo ingrediente
     (*listaIng)[novoTam - 1].id = calcId;
     printf("Digite o nome do ingrediente: ");
     scanf(" %[^\n]", (*listaIng)[novoTam - 1].nome);
@@ -25,7 +23,6 @@ void AddIngredientes(ingrediente** listaIng, int* tamIng) {
     scanf("%f", &(*listaIng)[novoTam - 1].preco);
     getchar();
 
-    // Exibir lista de ingredientes
     ReadIngredientes(tamIng, *listaIng);
 
     printf("Ingrediente adicionado com sucesso!\n");
@@ -82,13 +79,16 @@ void UpdateIngredientes(ingrediente* ing) {
 }
 
 
-void DeletePizza(ingrediente* ing) {
+void DeleteIngredientes(ingrediente* ing) {
 
-    ing->id = NULL;
-    ing->nome = NULL;
-    ing->preco = NULL;
-    
-    printf("\nPizza Deletada com Sucesso!\n");
+    char* a = "DELETADO";
+
+    ing->id = 0;
+    strcpy(ing->nome,a);
+    ing->preco = 0;
+
+    printf("\nIngrediente deletado com Sucesso!\n");
+
 }
 
 

@@ -12,4 +12,4 @@ int ReadIngredientes(int* tamIng, ingrediente* listaIng);
 void UpdateIngredientes(ingrediente* ing);
 void DeleteIngredientes(ingrediente* ing);
 
-#endif // INGREDIENTE_H
+#endif

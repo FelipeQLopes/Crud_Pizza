@@ -43,7 +43,7 @@ void escolher(char escolha1, ingrediente** listaIng, pizzas** listaPizza, int* t
     printf("\n");
 
     switch (escolha1) {
-        case 'C': // Criar
+        case 'C': 
             if (escolha2 == 'I') {
                 AddIngredientes(listaIng, tamIng); 
             } else if (escolha2 == 'P') {
@@ -81,6 +81,7 @@ void escolher(char escolha1, ingrediente** listaIng, pizzas** listaPizza, int* t
                 scanf("%d", &idDelete);
                 DeletePizzas(&(*listaPizza)[idUpdate]);
             }
+
             break;
 
         default:
