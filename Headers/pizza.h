@@ -16,6 +16,7 @@ typedef struct pizzas {
 void AddPizza(pizzas** listaPizza, int* tamPiz, ingrediente* listaIng, int* tamIng);
 int ReadPizza(int* tamPiz, pizzas* listaPizza);
 void UpdatePizzas(pizzas* piz);
-void DeletePizzas(pizzas* piz);
+void DeletePizzas(pizzas** listaPizza, int* tamPiz);
+void venderPizza(pizzas** listaPizza, int* tamPiz, ingrediente* listaIng, int* tamIng);
 
 #endif

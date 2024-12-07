@@ -10,6 +10,6 @@ typedef struct ingrediente {
 void AddIngredientes(ingrediente** listaIng, int* tamIng);
 int ReadIngredientes(int* tamIng, ingrediente* listaIng);
 void UpdateIngredientes(ingrediente* ing);
-void DeleteIngredientes(ingrediente* ing);
+void DeleteIngredientes(ingrediente** listaIng, int* tamIng);
 
 #endif
