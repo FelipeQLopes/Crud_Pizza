@@ -40,8 +40,8 @@ int ReadIngredientes(int* tamIng, ingrediente* listaIng) {
     resposta = toupper(resposta);
 
     if (resposta == 'S') {
-        for (int i = 1; i < *tamIng; i++) {
-            printf("ID: %-3d, Ingrediente: %-25s, Preco: R$ %-5.2f\n", listaIng[i].id, listaIng[i].nome, listaIng[i].preco);
+        for (int i = 0; i < *tamIng; i++) {
+            printf("ID: %-3d, Ingrediente: %-25s, Preco: R$ %-5.2f\n", i, listaIng[i].nome, listaIng[i].preco);
         }
     }
 
@@ -78,17 +78,23 @@ void UpdateIngredientes(ingrediente* ing) {
     }
 }
 
+void DeleteIngredientes(ingrediente** listaIng, int* tamIng) {
+    int idDelete;
 
-void DeleteIngredientes(ingrediente* ing) {
+    printf("Escolha o ID do ingrediente que voce quer deletar:\n");
+    scanf("%d", &idDelete);
 
-    char* a = "DELETADO";
+    if (idDelete < 0 || idDelete >= *tamIng) {
+        printf("ID invalido\n");
+        return;
+    }
 
-    ing->id = 0;
-    strcpy(ing->nome,a);
-    ing->preco = 0;
+    for (int i = idDelete; i < *tamIng - 1; i++) {
+        (*listaIng)[i] = (*listaIng)[i + 1];
+    }
 
-    printf("\nIngrediente deletado com Sucesso!\n");
+    (*tamIng)--;
+    *listaIng = realloc(*listaIng, (*tamIng) * sizeof(ingrediente));
 
+    printf("\nIngrediente deletado com sucesso!\n");
 }
-
-
