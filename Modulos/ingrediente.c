@@ -11,6 +11,7 @@ void AddIngredientes(ingrediente **listaIng, int *tamIng)
 {
     calcId++;
     int novoTam = *tamIng + 1;
+    char espaco = '*';
 
     ingrediente *novaLista = realloc(*listaIng, sizeof(ingrediente) * novoTam);
 
@@ -18,22 +19,27 @@ void AddIngredientes(ingrediente **listaIng, int *tamIng)
     *tamIng = novoTam;
 
     (*listaIng)[novoTam - 1].id = calcId;
-    printf("Digite o nome do ingrediente: ");
+    printf("\nDigite o nome do ingrediente: ");
     scanf(" %[^\n]", (*listaIng)[novoTam - 1].nome);
-    printf("Digite o preco do ingrediente: ");
+    printf("\nDigite o preco do ingrediente: R$ ");
     scanf("%f", &(*listaIng)[novoTam - 1].preco);
     getchar();
 
     ReadIngredientes(tamIng, *listaIng);
 
-    printf("Ingrediente adicionado com sucesso!\n");
+    printf("\nIngrediente adicionado com sucesso!\n");
+    while(espaco != ' '){
+        printf("\nPressione [ ESPAÇO ] para continuar. \n");
+        scanf(" %c", &espaco);
+    }
+
 }
 
 int ReadIngredientes(int *tamIng, ingrediente *listaIng)
 {
     char resposta;
 
-    printf("\nVoce quer ver a lista de ingredientes? (S/N)\n");
+    printf("\nExibir a lista de ingredientes? [ S ou N ] \n");
     scanf(" %c", &resposta);
     getchar();
 
@@ -43,10 +49,16 @@ int ReadIngredientes(int *tamIng, ingrediente *listaIng)
 
     if (resposta == 'S')
     {
+        printf("\n|----------------------------------------|");
+        printf("\n|             PIZZARIA QUIJU             |");
+        printf("\n|----------------------------------------|");
+        printf("\n| %-2s | %-20s | %-10s |", "ID", "Ingrediente", "Preço (R$)");
+        printf("\n|----------------------------------------|");
         for (int i = 0; i < *tamIng; i++)
         {
-            printf("ID: %-3d, Ingrediente: %-25s, Preco: R$ %-5.2f\n", i, listaIng[i].nome, listaIng[i].preco);
+            printf("\n| %-2d | %-20s | R$ %-8.2f|", i, listaIng[i].nome, listaIng[i].preco);
         }
+        printf("\n|----------------------------------------|");
     }
 
     return *tamIng;

@@ -1,10 +1,14 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <string.h>
+#include "headers/pre_processamento.h"
 #include "headers/ingrediente.h"
 #include "headers/pizza.h"
 
 void escolher(char escolha1, ingrediente **listaIng, pizzas **listaPizza, int *tamIng, int *tamPiz);
+void menu_inicio();
+void menu_escolher(char escolha);
 
 int main()
 {
@@ -15,7 +19,8 @@ int main()
     arquivoIng = fopen("Ing.txt", "r");
     arquivoPiz = fopen("Piz.txt", "r");
 
-    char escolha;
+    char escolha = '*';
+
     ingrediente *listaIng = malloc(sizeof(ingrediente));
     ingrediente *readIng = malloc(sizeof(ingrediente));
     pizzas *listaPizza = malloc(sizeof(pizzas));
@@ -45,20 +50,13 @@ int main()
 
         printf("\nDados de pizzas importados com sucesso!\n");
     }
-    printf("\nBem-Vindo ao programa da Pizzaria QUIJU\n");
 
-    printf("\nPara utilizar as funcoes do programa digite C caso queira adicionar tanto pizzas quanto ingredientes, R caso queira ler ingredientes ou pizzas,\nU caso queira editar um dado, D caso queira deletar um ingrediente ou pizza e V caso queira vender uma pizza:\n");
-
-    scanf(" %c", &escolha);
-    escolha = toupper(escolha);
-
-    while (escolha == 'C' || escolha == 'R' || escolha == 'U' || escolha == 'D' || escolha == 'V')
+    while (escolha != 'S')
     {
-        escolher(escolha, &listaIng, &listaPizza, &tamIng, &tamPiz);
-
-        printf("\nNovamente caso queira utilizar as funcoes digite C para adicionar, R para ler, U para editar, D para deletar e V para vender\n");
+        menu_inicio();
         scanf(" %c", &escolha);
         escolha = toupper(escolha);
+        escolher(escolha, &listaIng, &listaPizza, &tamIng, &tamPiz);
     }
 
     arquivoIng = fopen("Ing.txt", "w");
@@ -74,11 +72,10 @@ int main()
 
 void escolher(char escolha1, ingrediente **listaIng, pizzas **listaPizza, int *tamIng, int *tamPiz)
 {
-
     char escolha2;
     int idUpdate;
 
-    printf("\nVoce quer fazer isso para um ingrediente ou para uma pizza? (I), (P)\n");
+    menu_escolher(escolha1);
     scanf(" %c", &escolha2);
     escolha2 = toupper(escolha2);
     getchar();
@@ -152,4 +149,56 @@ void escolher(char escolha1, ingrediente **listaIng, pizzas **listaPizza, int *t
         printf("Opção inválida.\n");
         break;
     }
+}
+
+void menu_inicio()
+{
+    limpar_console();
+    printf("\n|----------------------------------------|");
+    printf("\n|             PIZZARIA QUIJU             |");
+    printf("\n|----------------------------------------|");
+    printf("\n| > Início                               |");
+    printf("\n| C - Adicionar Ingredientes ou Pizzas   |");
+    printf("\n| R - Ler os Ingredientes ou Pizzas      |");
+    printf("\n| U - Editar Ingredientes ou Pizzas      |");
+    printf("\n| D - Excluir Ingredientes ou Pizzas     |");
+    printf("\n| V - Vender uma Pizza                   |");
+    printf("\n| S - Sair                               |");
+    printf("\n|----------------------------------------|\n");
+    printf("\n  Opção: ");
+}
+
+void menu_escolher(char escolha)
+
+{
+    char breadcrumb[40] = "";
+
+    switch (escolha)
+    {
+        case 'C':
+            strcpy(breadcrumb, "Create                      ");
+            break;
+        case 'R':
+            strcpy(breadcrumb, "Read                        ");
+            break;
+        case 'U':
+            strcpy(breadcrumb, "Update                      ");
+            break;
+        case 'D':
+            strcpy(breadcrumb, "Delete                      ");
+            break;
+        case 'V':
+            strcpy(breadcrumb, "Venda                       ");
+            break;
+    }
+    limpar_console();
+    printf("\n|----------------------------------------|");
+    printf("\n|             PIZZARIA QUIJU             |");
+    printf("\n|----------------------------------------|");
+    printf("\n| > Início > %s|", breadcrumb);
+    printf("\n| I - Ingredientes                       |");
+    printf("\n| P - Pizzas                             |");
+    printf("\n| S - Sair                               |");
+    printf("\n|----------------------------------------|\n");
+    printf("\n  Opção: ");
 }
