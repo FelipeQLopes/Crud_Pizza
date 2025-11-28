@@ -1,6 +1,8 @@
 #ifndef INGREDIENTE_H
 #define INGREDIENTE_H
 
+#include "menu.h"
+
 typedef struct ingrediente {
     int id;
     char nome[50];

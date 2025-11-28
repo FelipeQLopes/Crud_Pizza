@@ -1,5 +1,6 @@
 #include "../headers/pizza.h"
 #include "../headers/ingrediente.h"
+#include "../headers/menu.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -7,9 +8,14 @@
 
 int calcId = 0;
 
+menu menuIng;
+
 void AddIngredientes(ingrediente **listaIng, int *tamIng)
 {
+    menuIng.operacao[0] = 'C';
+    menuIng.item[0] = 'I';
     calcId++;
+
     int novoTam = *tamIng + 1;
     char espaco = '*';
 
@@ -19,53 +25,60 @@ void AddIngredientes(ingrediente **listaIng, int *tamIng)
     *tamIng = novoTam;
 
     (*listaIng)[novoTam - 1].id = calcId;
-    printf("\nDigite o nome do ingrediente: ");
+    menuCriar(menuIng);
+    printf("\n| Nome: ");
     scanf(" %[^\n]", (*listaIng)[novoTam - 1].nome);
-    printf("\nDigite o preco do ingrediente: R$ ");
+    printf("| Preço: R$ ");
     scanf("%f", &(*listaIng)[novoTam - 1].preco);
+    printf("|----------------------------------------|\n");
+    printf("|  Ingrediente adicionado com sucesso!   |\n");
+    printf("|                                        |\n");
+    printf("|  Pressione [ ENTER ] para continuar.   |\n");
+    printf("|----------------------------------------|\n ");
+    getchar();
     getchar();
 
-    ReadIngredientes(tamIng, *listaIng);
-
-    printf("\nIngrediente adicionado com sucesso!\n");
-    while(espaco != ' '){
-        printf("\nPressione [ ESPAÇO ] para continuar. \n");
-        scanf(" %c", &espaco);
-    }
 
 }
 
 int ReadIngredientes(int *tamIng, ingrediente *listaIng)
 {
+    menuIng.operacao[0] = 'R';
+    menuIng.item[0] = 'I';
     char resposta;
+    char espaco;
+    int i;
 
-    printf("\nExibir a lista de ingredientes? [ S ou N ] \n");
-    scanf(" %c", &resposta);
-    getchar();
+    menuCriar(menuIng);
 
     printf("\n");
 
     resposta = toupper(resposta);
 
-    if (resposta == 'S')
+    menuCriar(menuIng);
+    printf("\n|    |                      |            |");
+    printf("\n| %-2s | %-20s | %-10s |", "ID", "    Ingrediente", "Preço (R$)");
+    printf("\n|    |                      |            |");
+    printf("\n|----------------------------------------|");
+    for (i = 0; i < *tamIng; i++)
     {
-        printf("\n|----------------------------------------|");
-        printf("\n|             PIZZARIA QUIJU             |");
-        printf("\n|----------------------------------------|");
-        printf("\n| %-2s | %-20s | %-10s |", "ID", "Ingrediente", "Preço (R$)");
-        printf("\n|----------------------------------------|");
-        for (int i = 0; i < *tamIng; i++)
-        {
-            printf("\n| %-2d | %-20s | R$ %-8.2f|", i, listaIng[i].nome, listaIng[i].preco);
-        }
-        printf("\n|----------------------------------------|");
+        printf("\n| %-2d | %-20s | R$ %-8.2f|", i, listaIng[i].nome, listaIng[i].preco);
     }
+    if(i==0){
+        printf("\n|     Nenhum ingrediente encontrado!     |\n");
+    }
+    printf("|----------------------------------------|\n");
+    printf("|  Pressione [ ENTER ] para continuar.   |\n");
+    printf("|----------------------------------------|\n ");
+    getchar();
 
     return *tamIng;
 }
 
 void UpdateIngredientes(ingrediente *ing)
 {
+    menuIng.operacao[0] = 'U';
+    menuIng.item[0] = 'I';
     int escolhaTipo;
     char nomeEdit[50];
     float precoEdit;
@@ -98,6 +111,8 @@ void UpdateIngredientes(ingrediente *ing)
 
 void DeleteIngredientes(ingrediente **listaIng, int *tamIng)
 {
+    menuIng.operacao[0] = 'D';
+    menuIng.item[0] = 'I';
     int idDelete;
 
     printf("Escolha o ID do ingrediente que voce quer deletar:\n");

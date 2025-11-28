@@ -1,14 +1,18 @@
 #include "../headers/pizza.h"
 #include "../headers/ingrediente.h"
+#include "../headers/menu.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 
 int pizzaId = 0;
+menu menuPiz;
 
 void AddPizza(pizzas **listaPizza, int *tamPiz, ingrediente *listaIng, int *tamIng)
-{
+{   
+    menuPiz.operacao[0] = 'C';
+    menuPiz.item[0] = 'P';
     pizzaId++;
     *tamPiz += 1;
 
@@ -56,6 +60,8 @@ void AddPizza(pizzas **listaPizza, int *tamPiz, ingrediente *listaIng, int *tamI
 
 int ReadPizza(int *tamPiz, pizzas *listaPizza)
 {
+    menuPiz.operacao[0] = 'R';
+    menuPiz.item[0] = 'P';
     char resposta;
     int respostaId;
 
@@ -95,7 +101,8 @@ int ReadPizza(int *tamPiz, pizzas *listaPizza)
 
 void UpdatePizzas(pizzas *piz)
 {
-
+    menuPiz.operacao[0] = 'U';
+    menuPiz.item[0] = 'P';
     int escolhaTipo, qtdIngEdit;
     char nomeEdit[50], tamanhoEdit;
     float precoEdit;
@@ -135,7 +142,8 @@ void UpdatePizzas(pizzas *piz)
 
 void DeletePizzas(pizzas **listaPizza, int *tamPiz)
 {
-
+    menuPiz.operacao[0] = 'D';
+    menuPiz.item[0] = 'P';
     int idDelete;
 
     printf("Escolha o ID da Pizza que voce quer deletar:\n");
@@ -160,7 +168,8 @@ void DeletePizzas(pizzas **listaPizza, int *tamPiz)
 
 void venderPizza(pizzas **listaPizza, int *tamPiz, ingrediente *listaIng, int *tamIng)
 {
-
+    menuPiz.operacao[0] = 'V';
+    menuPiz.item[0] = 'P';
     char resposta;
     int idVender, escolhaIng;
     float soma = 0;

@@ -1,9 +1,9 @@
 all:
-	gcc main.c modulos/ingrediente.c modulos/pizza.c -o main
+	gcc main.c modulos/ingrediente.c modulos/pizza.c modulos/menu.c modulos/pre_processamento.c -o main
 
 run:
-	./main || main.exe
+	./main
 
 crun:
-	gcc main.c modulos/ingrediente.c modulos/pizza.c -o main
-	./main || main.exe
+	gcc main.c modulos/ingrediente.c modulos/pizza.c modulos/menu.c modulos/pre_processamento.c -o main
+	./main

@@ -5,77 +5,116 @@
 #include "headers/pre_processamento.h"
 #include "headers/ingrediente.h"
 #include "headers/pizza.h"
+#include "headers/menu.h"
 
-void escolher(char escolha1, ingrediente **listaIng, pizzas **listaPizza, int *tamIng, int *tamPiz);
-void menu_inicio();
-void menu_escolher(char escolha);
+void escolher(char escolha1, ingrediente **listaIng, pizzas **listaPizza, int *tamIng, int *tamPiz, menu menuMain);
 
 int main()
 {
 
     FILE *arquivoIng;
     FILE *arquivoPiz;
+    menu menuMain;
 
     arquivoIng = fopen("Ing.txt", "r");
     arquivoPiz = fopen("Piz.txt", "r");
 
     char escolha = '*';
 
-    ingrediente *listaIng = malloc(sizeof(ingrediente));
+    ingrediente *listaIng = NULL;
     ingrediente *readIng = malloc(sizeof(ingrediente));
-    pizzas *listaPizza = malloc(sizeof(pizzas));
+    pizzas *listaPizza = NULL;
     pizzas *readPiz = malloc(sizeof(pizzas));
     int tamIng = 0;
     int tamPiz = 0;
 
     if (arquivoIng != NULL)
     {
-        while (fread(readIng, sizeof(ingrediente), 1, arquivoIng) != 0)
+        while (fread(readIng, sizeof(ingrediente), 1, arquivoIng) == 1)
         {
+            listaIng = realloc(listaIng, sizeof(ingrediente) * (tamIng + 1));
+            if (listaIng == NULL) {
+                printf("Erro de memória ao importar ingredientes!\n");
+                exit(1);
+            }
             listaIng[tamIng] = *readIng;
             tamIng++;
-            listaIng = realloc(listaIng, sizeof(ingrediente) * (tamIng + 1));
         }
+        fclose(arquivoIng);
         printf("\nDados de ingredientes importados com sucesso!\n");
     }
-    if (arquivoIng != NULL)
+    // Se não importou nada, inicializa com espaço mínimo
+    if (listaIng == NULL) {
+        listaIng = malloc(sizeof(ingrediente));
+        if (listaIng == NULL) {
+            printf("Erro de memória ao inicializar ingredientes!\n");
+            exit(1);
+        }
+        tamIng = 0;
+    }
+    if (arquivoPiz != NULL)
     {
-
-        while (fread(readPiz, sizeof(pizzas), 1, arquivoPiz) != 0)
+        while (fread(readPiz, sizeof(pizzas), 1, arquivoPiz) == 1)
         {
+            listaPizza = realloc(listaPizza, sizeof(pizzas) * (tamPiz + 1));
+            if (listaPizza == NULL) {
+                printf("Erro de memória ao importar pizzas!\n");
+                exit(1);
+            }
             listaPizza[tamPiz] = *readPiz;
             tamPiz++;
-            listaPizza = realloc(listaPizza, sizeof(pizzas) * (tamPiz + 1));
         }
-
+        fclose(arquivoPiz);
         printf("\nDados de pizzas importados com sucesso!\n");
     }
+    // Se não importou nada, inicializa com espaço mínimo
+    if (listaPizza == NULL) {
+        listaPizza = malloc(sizeof(pizzas));
+        if (listaPizza == NULL) {
+            printf("Erro de memória ao inicializar pizzas!\n");
+            exit(1);
+        }
+        tamPiz = 0;
+    }
+    free(readIng);
+    free(readPiz);
 
     while (escolha != 'S')
     {
-        menu_inicio();
+        menuOperacao(menuMain);
         scanf(" %c", &escolha);
         escolha = toupper(escolha);
-        escolher(escolha, &listaIng, &listaPizza, &tamIng, &tamPiz);
+        if (escolha == 'S') break;
+        menuMain.operacao[0] = escolha;
+        escolher(escolha, &listaIng, &listaPizza, &tamIng, &tamPiz, menuMain);
     }
 
     arquivoIng = fopen("Ing.txt", "w");
-    fwrite(listaIng, sizeof(ingrediente), tamIng, arquivoIng);
-    printf("\nDados de ingredientes exportados com sucesso!\n");
+    if (arquivoIng != NULL && listaIng != NULL && tamIng > 0) {
+        fwrite(listaIng, sizeof(ingrediente), tamIng, arquivoIng);
+        fclose(arquivoIng);
+        printf("\nDados de ingredientes exportados com sucesso!\n");
+    }
 
     arquivoPiz = fopen("Piz.txt", "w");
-    fwrite(listaPizza, sizeof(pizzas), tamPiz, arquivoPiz);
-    printf("\nDados de pizzas exportados com sucesso!\n\n");
+    if (arquivoPiz != NULL && listaPizza != NULL && tamPiz > 0) {
+        fwrite(listaPizza, sizeof(pizzas), tamPiz, arquivoPiz);
+        fclose(arquivoPiz);
+        printf("\nDados de pizzas exportados com sucesso!\n\n");
+    }
+
+    free(listaIng);
+    free(listaPizza);
 
     return 0;
 }
 
-void escolher(char escolha1, ingrediente **listaIng, pizzas **listaPizza, int *tamIng, int *tamPiz)
+void escolher(char escolha1, ingrediente **listaIng, pizzas **listaPizza, int *tamIng, int *tamPiz, menu menuMain)
 {
     char escolha2;
     int idUpdate;
 
-    menu_escolher(escolha1);
+    menuItem(menuMain);
     scanf(" %c", &escolha2);
     escolha2 = toupper(escolha2);
     getchar();
@@ -151,22 +190,6 @@ void escolher(char escolha1, ingrediente **listaIng, pizzas **listaPizza, int *t
     }
 }
 
-void menu_inicio()
-{
-    limpar_console();
-    printf("\n|----------------------------------------|");
-    printf("\n|             PIZZARIA QUIJU             |");
-    printf("\n|----------------------------------------|");
-    printf("\n| > Início                               |");
-    printf("\n| C - Adicionar Ingredientes ou Pizzas   |");
-    printf("\n| R - Ler os Ingredientes ou Pizzas      |");
-    printf("\n| U - Editar Ingredientes ou Pizzas      |");
-    printf("\n| D - Excluir Ingredientes ou Pizzas     |");
-    printf("\n| V - Vender uma Pizza                   |");
-    printf("\n| S - Sair                               |");
-    printf("\n|----------------------------------------|\n");
-    printf("\n  Opção: ");
-}
 
 void menu_escolher(char escolha)
 
