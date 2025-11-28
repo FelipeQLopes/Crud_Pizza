@@ -1,5 +1,5 @@
-#include "../Headers/pizza.h"
-#include "../Headers/ingrediente.h"
+#include "../headers/pizza.h"
+#include "../headers/ingrediente.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,13 +7,14 @@
 
 int pizzaId = 0;
 
-void AddPizza(pizzas** listaPizza, int* tamPiz, ingrediente* listaIng, int* tamIng) {
+void AddPizza(pizzas **listaPizza, int *tamPiz, ingrediente *listaIng, int *tamIng)
+{
     pizzaId++;
     *tamPiz += 1;
 
     *listaPizza = realloc(*listaPizza, sizeof(pizzas) * (*tamPiz));
 
-    pizzas* novaPizza = &(*listaPizza)[*tamPiz - 1];
+    pizzas *novaPizza = &(*listaPizza)[*tamPiz - 1];
     novaPizza->id = pizzaId;
 
     printf("Digite o nome da pizza: ");
@@ -36,11 +37,13 @@ void AddPizza(pizzas** listaPizza, int* tamPiz, ingrediente* listaIng, int* tamI
     printf("(Escolha digitando o ID dos ingredientes, ou um ID inválido para finalizar):\n");
 
     int escolhaIng;
-    while (novaPizza->num_ingredientes < 10) {
+    while (novaPizza->num_ingredientes < 10)
+    {
         printf("Escolha o ID do ingrediente: ");
         scanf("%d", &escolhaIng);
 
-        if (escolhaIng < 0 || escolhaIng >= qtdIng) {
+        if (escolhaIng < 0 || escolhaIng >= qtdIng)
+        {
             break;
         }
 
@@ -51,8 +54,8 @@ void AddPizza(pizzas** listaPizza, int* tamPiz, ingrediente* listaIng, int* tamI
     printf("Pizza adicionada com sucesso!\n");
 }
 
-
-int ReadPizza(int* tamPiz, pizzas* listaPizza) {
+int ReadPizza(int *tamPiz, pizzas *listaPizza)
+{
     char resposta;
     int respostaId;
 
@@ -62,8 +65,10 @@ int ReadPizza(int* tamPiz, pizzas* listaPizza) {
 
     resposta = toupper(resposta);
 
-    if (resposta == 'S') {
-        for (int i = 0; i < *tamPiz; i++) {
+    if (resposta == 'S')
+    {
+        for (int i = 0; i < *tamPiz; i++)
+        {
             printf("ID: %-3d, Pizza: %-25s, Tamanho: %-5.c Preco: R$ %-5.2f\n", i, listaPizza[i].nome, listaPizza[i].tamanho, listaPizza[i].preco);
         }
     }
@@ -74,21 +79,22 @@ int ReadPizza(int* tamPiz, pizzas* listaPizza) {
 
     resposta = toupper(resposta);
 
-    if (resposta == 'S') {
+    if (resposta == 'S')
+    {
         printf("\nDigite o ID de qual pizza voce deseja ver os ingredientes\n");
         scanf("%d", &respostaId);
-        for(int k = 0; k < listaPizza[respostaId].num_ingredientes; k++){
+        for (int k = 0; k < listaPizza[respostaId].num_ingredientes; k++)
+        {
 
             printf("Ingrediente %2d: %-25s\n", k + 1, listaPizza[respostaId].ing[k].nome);
-
         }
-
     }
 
     return *tamPiz;
 }
 
-void UpdatePizzas(pizzas* piz){
+void UpdatePizzas(pizzas *piz)
+{
 
     int escolhaTipo, qtdIngEdit;
     char nomeEdit[50], tamanhoEdit;
@@ -98,50 +104,51 @@ void UpdatePizzas(pizzas* piz){
     printf("\t1 para o NOME \t 2 para o TAMANHO \t 3 para o PRECO\n");
     scanf("%d", &escolhaTipo);
 
-    switch(escolhaTipo){
+    switch (escolhaTipo)
+    {
 
-        case 1:
-            printf("Digite o novo nome:\n");
-            scanf(" %[^\n]", nomeEdit);
-            strcpy(piz->nome, nomeEdit);
-            printf("\nNome Atualizado com Sucesso!\n");
+    case 1:
+        printf("Digite o novo nome:\n");
+        scanf(" %[^\n]", nomeEdit);
+        strcpy(piz->nome, nomeEdit);
+        printf("\nNome Atualizado com Sucesso!\n");
 
-            break;
+        break;
 
-        case 2:
-            printf("Digite o novo tamanho:");
-            scanf(" %c", &tamanhoEdit);
-            piz->tamanho = tamanhoEdit;
-            printf("\nTamanho Atualizado com Sucesso!\n");
-        
-            break;
-        
-        case 3:
-            printf("Digite o novo preco:");
-            scanf("%f", &precoEdit);
-            piz->preco = precoEdit;
-            printf("\nPreco Atualizado com Sucesso!\n");
-        
-            break;
+    case 2:
+        printf("Digite o novo tamanho:");
+        scanf(" %c", &tamanhoEdit);
+        piz->tamanho = tamanhoEdit;
+        printf("\nTamanho Atualizado com Sucesso!\n");
 
+        break;
+
+    case 3:
+        printf("Digite o novo preco:");
+        scanf("%f", &precoEdit);
+        piz->preco = precoEdit;
+        printf("\nPreco Atualizado com Sucesso!\n");
+
+        break;
     }
-
 }
 
-
-void DeletePizzas(pizzas** listaPizza, int* tamPiz) {
+void DeletePizzas(pizzas **listaPizza, int *tamPiz)
+{
 
     int idDelete;
 
     printf("Escolha o ID da Pizza que voce quer deletar:\n");
     scanf("%d", &idDelete);
 
-    if (idDelete < 0 || idDelete >= *tamPiz) {
+    if (idDelete < 0 || idDelete >= *tamPiz)
+    {
         printf("ID invalido\n");
         return;
     }
 
-    for (int i = idDelete; i < *tamPiz - 1; i++) {
+    for (int i = idDelete; i < *tamPiz - 1; i++)
+    {
         (*listaPizza)[i] = (*listaPizza)[i + 1];
     }
 
@@ -149,10 +156,10 @@ void DeletePizzas(pizzas** listaPizza, int* tamPiz) {
     *listaPizza = realloc(*listaPizza, (*tamPiz) * sizeof(pizzas));
 
     printf("\nPizza deletada com Sucesso!\n");
-    
 }
 
-void venderPizza(pizzas** listaPizza, int* tamPiz, ingrediente* listaIng, int* tamIng){
+void venderPizza(pizzas **listaPizza, int *tamPiz, ingrediente *listaIng, int *tamIng)
+{
 
     char resposta;
     int idVender, escolhaIng;
@@ -165,7 +172,8 @@ void venderPizza(pizzas** listaPizza, int* tamPiz, ingrediente* listaIng, int* t
     printf("Escolha o ID da Pizza que voce quer vender:\n");
     scanf("%d", &idVender);
 
-    if (idVender < 0 || idVender >= *tamPiz) {
+    if (idVender < 0 || idVender >= *tamPiz)
+    {
         printf("\nID invalido\n");
         return;
     }
@@ -175,26 +183,27 @@ void venderPizza(pizzas** listaPizza, int* tamPiz, ingrediente* listaIng, int* t
     getchar();
     resposta = toupper(resposta);
 
-    if(resposta == 'S'){
+    if (resposta == 'S')
+    {
 
         int qtdIng = ReadIngredientes(tamIng, listaIng);
 
         printf("\nEscolha o ID do ingrediente: ");
         scanf("%d", &escolhaIng);
 
-        while (escolhaIng > 0 && escolhaIng <= *tamIng) {
+        while (escolhaIng > 0 && escolhaIng <= *tamIng)
+        {
 
             soma += listaIng[escolhaIng].preco;
             printf("\nEscolha o ID do ingrediente: ");
             scanf("%d", &escolhaIng);
-
         }
-
     }
 
     printf("\nO Preco final da pizza %-25s eh R$ %-5.2f\n", (*listaPizza)[idVender].nome, (*listaPizza)[idVender].preco + soma);
 
-    for (int i = idVender; i < *tamPiz - 1; i++) {
+    for (int i = idVender; i < *tamPiz - 1; i++)
+    {
         (*listaPizza)[i] = (*listaPizza)[i + 1];
     }
 
@@ -202,5 +211,4 @@ void venderPizza(pizzas** listaPizza, int* tamPiz, ingrediente* listaIng, int* t
     *listaPizza = realloc(*listaPizza, (*tamPiz) * sizeof(pizzas));
 
     printf("\nPizza vendida com sucesso!\n");
-
 }
