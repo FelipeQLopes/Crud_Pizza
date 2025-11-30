@@ -65,9 +65,9 @@ int ReadIngredientes(int *tamIng, ingrediente *listaIng)
         printf("\n| %-2d | %-20s | R$ %-8.2f|", i, listaIng[i].nome, listaIng[i].preco);
     }
     if(i==0){
-        printf("\n|     Nenhum ingrediente encontrado!     |\n");
+        printf("\n|     Nenhum ingrediente encontrado!     |");
     }
-    printf("|----------------------------------------|\n");
+    printf("\n|----------------------------------------|\n");
     printf("|  Pressione [ ENTER ] para continuar.   |\n");
     printf("|----------------------------------------|\n ");
     getchar();
@@ -79,34 +79,31 @@ void UpdateIngredientes(ingrediente *ing)
 {
     menuIng.operacao[0] = 'U';
     menuIng.item[0] = 'I';
-    int escolhaTipo;
     char nomeEdit[50];
     float precoEdit;
 
-    printf("\nDigite o numero do que voce quer editar desse ingrediente:\n");
-    printf("\t1 para o NOME \t 2 para o PRECO\n");
-    scanf("%d", &escolhaTipo);
+    menuCriar(menuIng);
+    printf("\n|  Insira -1 para manter o valor antigo  |");
+    printf("\n|----------------------------------------|");
+    printf("\n| Nome: ");
+    scanf(" %[^\n]", nomeEdit);
+    printf("| Preço: R$ ");
+    scanf("%f", &precoEdit);
+    getchar();
 
-    switch (escolhaTipo)
-    {
-    case 1:
-        printf("Digite o novo nome:\n");
-        scanf(" %[^\n]", nomeEdit);
+    if(strcmp(nomeEdit, "-1")!=0){
         strcpy(ing->nome, nomeEdit);
-        printf("\nNome Atualizado com Sucesso!\n");
-        break;
-
-    case 2:
-        printf("Digite o novo preco:\n");
-        scanf("%f", &precoEdit);
-        ing->preco = precoEdit;
-        printf("\nPreco Atualizado com Sucesso!\n");
-        break;
-
-    default:
-        printf("Opção inválida.\n");
-        break;
     }
+    if(precoEdit != -1){
+        ing->preco = precoEdit;
+    }
+
+    printf("|----------------------------------------|\n");
+    printf("|  Ingrediente atualizado com sucesso!   |\n");
+    printf("|                                        |\n");
+    printf("|  Pressione [ ENTER ] para continuar.   |\n");
+    printf("|----------------------------------------|\n ");
+    getchar();
 }
 
 void DeleteIngredientes(ingrediente **listaIng, int *tamIng)
@@ -115,12 +112,14 @@ void DeleteIngredientes(ingrediente **listaIng, int *tamIng)
     menuIng.item[0] = 'I';
     int idDelete;
 
-    printf("Escolha o ID do ingrediente que voce quer deletar:\n");
+    menuCriar(menuIng);
+    printf("\n| ID do ingrediente para deletar:        |\n| ");
     scanf("%d", &idDelete);
+    getchar();
 
     if (idDelete < 0 || idDelete >= *tamIng)
     {
-        printf("ID invalido\n");
+        printf("| ID invalido                            |\n");
         return;
     }
 
@@ -132,5 +131,10 @@ void DeleteIngredientes(ingrediente **listaIng, int *tamIng)
     (*tamIng)--;
     *listaIng = realloc(*listaIng, (*tamIng) * sizeof(ingrediente));
 
-    printf("\nIngrediente deletado com sucesso!\n");
+    printf("|----------------------------------------|\n");
+    printf("|   Ingrediente excluído com sucesso!    |\n");
+    printf("|                                        |\n");
+    printf("|  Pressione [ ENTER ] para continuar.   |\n");
+    printf("|----------------------------------------|\n ");
+    getchar();
 }

@@ -112,7 +112,9 @@ int main()
 void escolher(char escolha1, ingrediente **listaIng, pizzas **listaPizza, int *tamIng, int *tamPiz, menu menuMain)
 {
     char escolha2;
+    char x;
     int idUpdate;
+    int idDelete;
 
     menuItem(menuMain);
     scanf(" %c", &escolha2);
@@ -147,25 +149,47 @@ void escolher(char escolha1, ingrediente **listaIng, pizzas **listaPizza, int *t
     case 'U':
         if (escolha2 == 'I')
         {
+            printf("Você quer ver os Ingredientes antes? [ S/N ]\n");
+            scanf(" %c", &x);
+            getchar();
+            toupper(x) == 'S' ? ReadIngredientes(tamIng, *listaIng) : 0;
+            limpar_console();
             printf("Escolha o id do ingrediente que voce quer editar:\n");
             scanf("%d", &idUpdate);
+            getchar();
             UpdateIngredientes(&(*listaIng)[idUpdate]);
         }
         else if (escolha2 == 'P')
         {
+            printf("Você quer ver as Pizzas antes? [ S/N ]\n");
+            scanf(" %c", &x);
+            getchar();
+            toupper(x) == 'S' ? ReadPizza(tamPiz, *listaPizza) : 0;
+            limpar_console();
             printf("Escolha o id da pizza que voce quer editar:\n");
             scanf("%d", &idUpdate);
+            getchar();
             UpdatePizzas(&(*listaPizza)[idUpdate]);
         }
         break;
-
     case 'D':
         if (escolha2 == 'I')
         {
+            printf("Você quer ver os Ingredientes antes? [ S/N ]\n");
+            scanf(" %c", &x);
+            getchar();
+            toupper(x) == 'S' ? ReadIngredientes(tamIng, *listaIng) : 0;
+            limpar_console();
             DeleteIngredientes(listaIng, tamIng);
         }
         else if (escolha2 == 'P')
         {
+            printf("Você quer ver os Ingredientes antes? [ S/N ]\n");
+            scanf(" %c", &x);
+            getchar();
+            toupper(x) == 'S' ? ReadIngredientes(tamIng, *listaIng) : 0;
+            limpar_console();
+            getchar();
             DeletePizzas(listaPizza, tamPiz);
         }
 
@@ -190,38 +214,3 @@ void escolher(char escolha1, ingrediente **listaIng, pizzas **listaPizza, int *t
     }
 }
 
-
-void menu_escolher(char escolha)
-
-{
-    char breadcrumb[40] = "";
-
-    switch (escolha)
-    {
-        case 'C':
-            strcpy(breadcrumb, "Create                      ");
-            break;
-        case 'R':
-            strcpy(breadcrumb, "Read                        ");
-            break;
-        case 'U':
-            strcpy(breadcrumb, "Update                      ");
-            break;
-        case 'D':
-            strcpy(breadcrumb, "Delete                      ");
-            break;
-        case 'V':
-            strcpy(breadcrumb, "Venda                       ");
-            break;
-    }
-    limpar_console();
-    printf("\n|----------------------------------------|");
-    printf("\n|             PIZZARIA QUIJU             |");
-    printf("\n|----------------------------------------|");
-    printf("\n| > Início > %s|", breadcrumb);
-    printf("\n| I - Ingredientes                       |");
-    printf("\n| P - Pizzas                             |");
-    printf("\n| S - Sair                               |");
-    printf("\n|----------------------------------------|\n");
-    printf("\n  Opção: ");
-}

@@ -13,6 +13,8 @@ void AddPizza(pizzas **listaPizza, int *tamPiz, ingrediente *listaIng, int *tamI
 {   
     menuPiz.operacao[0] = 'C';
     menuPiz.item[0] = 'P';
+    int qtdIng;
+    int x;
     pizzaId++;
     *tamPiz += 1;
 
@@ -21,23 +23,30 @@ void AddPizza(pizzas **listaPizza, int *tamPiz, ingrediente *listaIng, int *tamI
     pizzas *novaPizza = &(*listaPizza)[*tamPiz - 1];
     novaPizza->id = pizzaId;
 
-    printf("Digite o nome da pizza: ");
+    menuCriar(menuPiz);
+    printf("| Nome: ");
     scanf(" %[^\n]", novaPizza->nome);
     getchar();
-    printf("Digite o tamanho da pizza (P, M, G): ");
+    printf("| Tamanho (P, M, G): ");
     scanf("%c", &novaPizza->tamanho);
     novaPizza->tamanho = toupper(novaPizza->tamanho);
     getchar();
-    printf("Digite o preco da pizza: ");
+    printf("| Preço: ");
     scanf("%f", &novaPizza->preco);
     getchar();
 
-    int qtdIng = ReadIngredientes(tamIng, listaIng);
+    printf("|  Exibr os Ingredientes antes? [ S/N ]  |\n| ");
+    scanf(" %c", &x);
+    getchar();
+    if(toupper(x) == 'S'){
+        qtdIng = ReadIngredientes(tamIng, listaIng);
+    }
 
     novaPizza->ing = malloc(sizeof(ingrediente) * 10);
     novaPizza->num_ingredientes = 0;
 
-    printf("\nAgora escolha até 10 ingredientes para sua pizza.\n");
+    menuCriar(menuPiz);
+    printf("\n|  Escolha até 10 Ingredientes da Pizza  |\n");
     printf("(Escolha digitando o ID dos ingredientes, ou um ID inválido para finalizar):\n");
 
     int escolhaIng;

@@ -23,7 +23,7 @@ Este programa implementa um sistema CRUD para gerenciar pizzas e ingredientes. E
 
 1. Compile o projeto com:  
    ```bash
-   gcc main.c Modulos/ingrediente.c Modulos/pizza.c -o main
+   gcc main.c modulos/ingrediente.c modulos/pizza.c -o main
    ```
 
 2. Execute o programa:  
