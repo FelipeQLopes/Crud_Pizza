@@ -40,6 +40,11 @@ void menuBreadcrumb(menu* menu){
             break;
     }
 
+    if(menu->nomeItem[1] != '\0'){
+        strcat(breadcrumb, " > ");
+        strcat(breadcrumb, menu->nomeItem);
+    }
+
     strncpy(menu->breadcrumb + 1, breadcrumb, strlen(breadcrumb));
 }
 

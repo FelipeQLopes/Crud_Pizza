@@ -67,7 +67,7 @@ int main()
         fclose(arquivoPiz);
         printf("\nDados de pizzas importados com sucesso!\n");
     }
-    // Se não importou nada, inicializa com espaço mínimo
+    
     if (listaPizza == NULL) {
         listaPizza = malloc(sizeof(pizzas));
         if (listaPizza == NULL) {
@@ -138,11 +138,11 @@ void escolher(char escolha1, ingrediente **listaIng, pizzas **listaPizza, int *t
     case 'R':
         if (escolha2 == 'I')
         {
-            ReadIngredientes(tamIng, *listaIng);
+            ReadIngredientes(tamIng, *listaIng, menuMain);
         }
         else if (escolha2 == 'P')
         {
-            ReadPizza(tamPiz, *listaPizza);
+            ReadPizza(tamPiz, listaPizza);
         }
         break;
 
@@ -152,7 +152,7 @@ void escolher(char escolha1, ingrediente **listaIng, pizzas **listaPizza, int *t
             printf("Você quer ver os Ingredientes antes? [ S/N ]\n");
             scanf(" %c", &x);
             getchar();
-            toupper(x) == 'S' ? ReadIngredientes(tamIng, *listaIng) : 0;
+            toupper(x) == 'S' ? ReadIngredientes(tamIng, *listaIng, menuMain) : 0;
             limpar_console();
             printf("Escolha o id do ingrediente que voce quer editar:\n");
             scanf("%d", &idUpdate);
@@ -161,15 +161,14 @@ void escolher(char escolha1, ingrediente **listaIng, pizzas **listaPizza, int *t
         }
         else if (escolha2 == 'P')
         {
-            printf("Você quer ver as Pizzas antes? [ S/N ]\n");
+            printf("| Você quer ver as Pizzas antes? [ S/N ]\n| ");
             scanf(" %c", &x);
             getchar();
-            toupper(x) == 'S' ? ReadPizza(tamPiz, *listaPizza) : 0;
-            limpar_console();
-            printf("Escolha o id da pizza que voce quer editar:\n");
+            toupper(x) == 'S' ? ReadPizza(tamPiz, listaPizza) : 0;
+            printf("| Escolha o id da pizza para editar:\n| ");
             scanf("%d", &idUpdate);
             getchar();
-            UpdatePizzas(&(*listaPizza)[idUpdate]);
+            UpdatePizzas(&(listaPizza[idUpdate]), *listaIng, tamIng);
         }
         break;
     case 'D':
@@ -178,7 +177,7 @@ void escolher(char escolha1, ingrediente **listaIng, pizzas **listaPizza, int *t
             printf("Você quer ver os Ingredientes antes? [ S/N ]\n");
             scanf(" %c", &x);
             getchar();
-            toupper(x) == 'S' ? ReadIngredientes(tamIng, *listaIng) : 0;
+            toupper(x) == 'S' ? ReadIngredientes(tamIng, *listaIng, menuMain) : 0;
             limpar_console();
             DeleteIngredientes(listaIng, tamIng);
         }
@@ -187,7 +186,7 @@ void escolher(char escolha1, ingrediente **listaIng, pizzas **listaPizza, int *t
             printf("Você quer ver os Ingredientes antes? [ S/N ]\n");
             scanf(" %c", &x);
             getchar();
-            toupper(x) == 'S' ? ReadIngredientes(tamIng, *listaIng) : 0;
+            toupper(x) == 'S' ? ReadIngredientes(tamIng, *listaIng, menuMain) : 0;
             limpar_console();
             getchar();
             DeletePizzas(listaPizza, tamPiz);

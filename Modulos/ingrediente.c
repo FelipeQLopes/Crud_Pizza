@@ -12,15 +12,14 @@ menu menuIng;
 
 void AddIngredientes(ingrediente **listaIng, int *tamIng)
 {
+    printf(".");
     menuIng.operacao[0] = 'C';
     menuIng.item[0] = 'I';
     calcId++;
 
     int novoTam = *tamIng + 1;
     char espaco = '*';
-
     ingrediente *novaLista = realloc(*listaIng, sizeof(ingrediente) * novoTam);
-
     *listaIng = novaLista;
     *tamIng = novoTam;
 
@@ -41,28 +40,21 @@ void AddIngredientes(ingrediente **listaIng, int *tamIng)
 
 }
 
-int ReadIngredientes(int *tamIng, ingrediente *listaIng)
+int ReadIngredientes(int *tamIng, ingrediente *listaIng, menu menu2)
 {
-    menuIng.operacao[0] = 'R';
-    menuIng.item[0] = 'I';
-    char resposta;
+    menu2.operacao[0] = 'R';
+    menu2.item[0] = 'I';
     char espaco;
     int i;
-
-    menuCriar(menuIng);
-
-    printf("\n");
-
-    resposta = toupper(resposta);
-
-    menuCriar(menuIng);
+    
+    menuCriar(menu2);
     printf("\n|    |                      |            |");
     printf("\n| %-2s | %-20s | %-10s |", "ID", "    Ingrediente", "Preço (R$)");
     printf("\n|    |                      |            |");
     printf("\n|----------------------------------------|");
     for (i = 0; i < *tamIng; i++)
     {
-        printf("\n| %-2d | %-20s | R$ %-8.2f|", i, listaIng[i].nome, listaIng[i].preco);
+        printf("\n| %-2d | %-20s | R$ %-8.2f|", i, (listaIng)[i].nome, (listaIng)[i].preco);
     }
     if(i==0){
         printf("\n|     Nenhum ingrediente encontrado!     |");
@@ -71,7 +63,7 @@ int ReadIngredientes(int *tamIng, ingrediente *listaIng)
     printf("|  Pressione [ ENTER ] para continuar.   |\n");
     printf("|----------------------------------------|\n ");
     getchar();
-
+    
     return *tamIng;
 }
 
