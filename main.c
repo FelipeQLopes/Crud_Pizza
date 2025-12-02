@@ -168,7 +168,11 @@ void escolher(char escolha1, ingrediente **listaIng, pizzas **listaPizza, int *t
             printf("| Escolha o id da pizza para editar:\n| ");
             scanf("%d", &idUpdate);
             getchar();
-            UpdatePizzas(&(listaPizza[idUpdate]), *listaIng, tamIng);
+            if(*tamPiz >= idUpdate){
+                UpdatePizzas(&(*listaPizza)[idUpdate], *listaIng, tamIng);
+            }else{
+                printf("| ID inválido");
+            }
         }
         break;
     case 'D':
@@ -183,12 +187,11 @@ void escolher(char escolha1, ingrediente **listaIng, pizzas **listaPizza, int *t
         }
         else if (escolha2 == 'P')
         {
-            printf("Você quer ver os Ingredientes antes? [ S/N ]\n");
+            printf("Você quer ver as Pizzas antes? [ S/N ]\n");
             scanf(" %c", &x);
             getchar();
-            toupper(x) == 'S' ? ReadIngredientes(tamIng, *listaIng, menuMain) : 0;
+            toupper(x) == 'S' ? ReadPizza(tamPiz, listaPizza) : 0;
             limpar_console();
-            getchar();
             DeletePizzas(listaPizza, tamPiz);
         }
 

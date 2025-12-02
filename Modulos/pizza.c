@@ -36,7 +36,7 @@ void AddPizza(pizzas **listaPizza, int *tamPiz, ingrediente *listaIng, int *tamI
     scanf("%f", &novaPizza->preco);
     getchar();
     printf("|----------------------------------------|");
-    printf("\n|  Exibr os Ingredientes antes? [ S/N ]  |\n|  ");
+    printf("\n| Exibir os Ingredientes antes? [ S/N ]  |\n|  ");
     scanf(" %c", &x);
     getchar();
     
@@ -68,7 +68,7 @@ void AddPizza(pizzas **listaPizza, int *tamPiz, ingrediente *listaIng, int *tamI
         novaPizza->num_ingredientes++;
     }
     printf("|----------------------------------------|");
-    printf("\n|     Pizza adicionada com sucesso!      |");
+    printf("\n|     Pizza Adicionada com sucesso!      |");
     printf("\n|  Exibir os Ingredientes adicionados?   |");
     printf("\n|               [ S/N ]                  |");
     printf("\n|----------------------------------------|\n ");
@@ -83,7 +83,7 @@ void AddPizza(pizzas **listaPizza, int *tamPiz, ingrediente *listaIng, int *tamI
 
 }
 
-int ReadPizza(int *tamPiz, pizzas **listaPizza)
+int ReadPizza(int* tamPiz, pizzas **listaPizza)
 {
     menuPiz.operacao[0] = 'R';
     menuPiz.item[0] = 'P';
@@ -101,44 +101,53 @@ int ReadPizza(int *tamPiz, pizzas **listaPizza)
         printf("\n| %-2d | %-13s |   %-3c | R$ %-6.2f |", i, (*listaPizza)[i].nome, (*listaPizza)[i].tamanho, (*listaPizza)[i].preco);
     }
     if(i==0){
+
         printf("\n|       Nenhuma Pizza encontrada!        |");
-    }
-    printf("\n|----------------------------------------|");
-    printf("\n|  Exibir Ingredientes de alguma Pizza?  |");
-    printf("\n|               [ S/N ]                  |");
-    printf("\n|----------------------------------------|\n| ");
-    scanf(" %c", &resposta);
-    getchar();
+        printf("\n|----------------------------------------|");
+        printf("\n|        Pizza Lida com sucesso!         |");
+        printf("\n|                                        |");
+        printf("\n|  Pressione [ ENTER ] para continuar.   |");
+        printf("\n|----------------------------------------|\n ");
+        getchar();
+        
+    }else{
 
-    resposta = toupper(resposta);
-
-    if (resposta == 'S')
-    {
-        menu m;
-        strcpy(m.nomeItem, "Pizza");
-        printf("| Digite o ID da Pizza: ");
-        if (scanf("%d", &respostaId) != 1) {
-            while(getchar() != '\n'); // limpar stdin
-            printf("ID inválido (entrada não numérica).\n");
-            return *tamPiz;
-        }
+        printf("\n|----------------------------------------|");
+        printf("\n|  Exibir Ingredientes de alguma Pizza?  |");
+        printf("\n|               [ S/N ]                  |");
+        printf("\n|----------------------------------------|\n| ");
+        scanf(" %c", &resposta);
         getchar();
 
-        if (respostaId < 0 || respostaId >= *tamPiz) {
-            printf("ID fora do intervalo (0..%d).\n", *tamPiz - 1);
-            return *tamPiz;
-        }
+        resposta = toupper(resposta);
 
-        // Verifica se a pizza tem ingredientes válidos
-        pizzas *p = &(*listaPizza)[respostaId];
-        if (p->num_ingredientes <= 0 || strcmp(p->ing[0].nome, "") == 0) {
-            printf("Essa pizza não possui ingredientes registrados.\n");
-            return *tamPiz;
-        }
+        if (resposta == 'S')
+        {
+            menu m;
+            strcpy(m.nomeItem, "Pizza");
+            printf("| Digite o ID da Pizza: ");
+            if (scanf("%d", &respostaId) != 1) {
+                while(getchar() != '\n'); // limpar stdin
+                printf("ID inválido (entrada não numérica).\n");
+                return *tamPiz;
+            }
+            getchar();
 
-        ReadIngredientes(&p->num_ingredientes, p->ing, m);
+            if (respostaId < 0 || respostaId >= *tamPiz) {
+                printf("ID fora do intervalo (0..%d).\n", *tamPiz - 1);
+                return *tamPiz;
+            }
+
+            // Verifica se a pizza tem ingredientes válidos
+            pizzas *p = &(*listaPizza)[respostaId];
+            if (p->num_ingredientes <= 0 || strcmp(p->ing[0].nome, "") == 0) {
+                printf("Essa pizza não possui ingredientes registrados.\n");
+                return *tamPiz;
+            }
+
+            ReadIngredientes(&p->num_ingredientes, p->ing, m);
+        }
     }
-
     return *tamPiz;
 }
 
@@ -146,37 +155,38 @@ void UpdatePizzas(pizzas *piz, ingrediente *listaIng, int *tamIng)
 {
     menuPiz.operacao[0] = 'U';
     menuPiz.item[0] = 'P';
-    int escolhaTipo;
     char nomeEdit[50], tamanhoEdit[10], x;
     float precoEdit;
+    pizzas* pizzaEdit = &(*piz);
+    (*pizzaEdit).id = piz->id;
 
     menuCriar(menuPiz);
     printf("\n|  Insira -1 para manter o valor antigo  |");
     printf("\n|----------------------------------------|");
     printf("\n| Nome: ");
     scanf(" %[^\n]", nomeEdit);
-    strcmp(nomeEdit, "-1") != 0 ? strcpy((piz)->nome,nomeEdit) : 0;
+    strcmp(nomeEdit, "-1") != 0 ? strcpy((*pizzaEdit).nome,nomeEdit) : 0;
     getchar();
     printf("| Tamanho (P, M, G): ");
     scanf("%s", tamanhoEdit);
     tamanhoEdit[0] = toupper(tamanhoEdit[0]);
-    tamanhoEdit[0] == 'P' || tamanhoEdit[0] == 'M' || tamanhoEdit[0] == 'G' ? (piz)->tamanho = tamanhoEdit[0] : 0; 
+    tamanhoEdit[0] == 'P' || tamanhoEdit[0] == 'M' || tamanhoEdit[0] == 'G' ? (*pizzaEdit).tamanho = tamanhoEdit[0] : 0; 
     getchar();
     printf("| Preço: R$ ");
     scanf("%f", &precoEdit);
-    precoEdit != -1 ? (piz)->preco = precoEdit : 0;
+    precoEdit != -1 ? (*pizzaEdit).preco = precoEdit : 0;
     getchar();
     printf("|----------------------------------------|");
     printf("\n|    Exibir os Ingredientes da Pizza?    |");
     printf("\n|               [ S/N ]                  |");
     printf("\n|----------------------------------------|\n ");
-    scanf(" %c", &x);
+    scanf("%c", &x);
     getchar();
     x = toupper(x);
     if(x == 'S'){
         menu m;
         strcpy(m.nomeItem, "Pizza");
-        (piz)->num_ingredientes != 0 ? ReadIngredientes(&(piz)->num_ingredientes, (piz)->ing, m) : 0;
+        piz->num_ingredientes != 0 ? ReadIngredientes(&piz->num_ingredientes, piz->ing, m) : 0;
     }
     printf("|----------------------------------------|");
     printf("\n|   Você quer editar os Ingredientes?    |");
@@ -194,9 +204,9 @@ void UpdatePizzas(pizzas *piz, ingrediente *listaIng, int *tamIng)
         printf("\n|    Escolha os IDs dos Ingredientes:    |\n");
 
         int escolhaIng;
-        piz->num_ingredientes = 0;
+        (*pizzaEdit).num_ingredientes = 0;
 
-        while((piz)->num_ingredientes < 10){
+        while((*pizzaEdit).num_ingredientes < 10){
             printf("| ");
             scanf("%d", &escolhaIng);
             getchar();
@@ -206,18 +216,19 @@ void UpdatePizzas(pizzas *piz, ingrediente *listaIng, int *tamIng)
                 break;
             }
 
-            (piz)->ing[(piz)->num_ingredientes] = listaIng[escolhaIng];
-            (piz)->num_ingredientes++;
+            (*pizzaEdit).ing[(*pizzaEdit).num_ingredientes] = listaIng[escolhaIng];
+            (*pizzaEdit).num_ingredientes++;
         }
 
     }
+    (*piz) = *pizzaEdit;
     printf("|----------------------------------------|\n");
-    printf("|     Pizza atualizada com sucesso!      |\n");
+    printf("|     Pizza Atualizada com sucesso!      |\n");
     printf("|                                        |\n");
     printf("|  Pressione [ ENTER ] para continuar.   |\n");
     printf("|----------------------------------------|\n ");
     getchar();
-
+    
 }
 
 void DeletePizzas(pizzas **listaPizza, int *tamPiz)
@@ -225,25 +236,31 @@ void DeletePizzas(pizzas **listaPizza, int *tamPiz)
     menuPiz.operacao[0] = 'D';
     menuPiz.item[0] = 'P';
     int idDelete;
-
-    printf("Escolha o ID da Pizza que voce quer deletar:\n");
+    
+    menuCriar(menuPiz);
+    printf("\n|  Escolha o ID da Pizza para excluir:   |\n| ");
     scanf("%d", &idDelete);
 
     if (idDelete < 0 || idDelete >= *tamPiz)
     {
-        printf("ID invalido\n");
+        printf("| ID invalido                            |\n");
         return;
     }
 
-    for (int i = idDelete; i < *tamPiz - 1; i++)
+    for (int i = idDelete; i < *tamPiz; i++)
     {
         (*listaPizza)[i] = (*listaPizza)[i + 1];
+        (*listaPizza)[i + 1].id--;
     }
 
     (*tamPiz)--;
-    *listaPizza = realloc(*listaPizza, (*tamPiz) * sizeof(pizzas));
 
-    printf("\nPizza deletada com Sucesso!\n");
+    printf("|----------------------------------------|\n");
+    printf("|      Pizza Deletada com sucesso!       |\n");
+    printf("|                                        |\n");
+    printf("|  Pressione [ ENTER ] para continuar.   |\n");
+    printf("|----------------------------------------|\n ");
+    getchar();
 }
 
 void venderPizza(pizzas **listaPizza, int *tamPiz, ingrediente *listaIng, int *tamIng)
@@ -263,7 +280,7 @@ void venderPizza(pizzas **listaPizza, int *tamPiz, ingrediente *listaIng, int *t
 
     if (idVender < 0 || idVender >= *tamPiz)
     {
-        printf("\nID invalido\n");
+        printf("| ID invalido");
         return;
     }
 
