@@ -16,8 +16,8 @@ int main()
     FILE *arquivoPiz;
     menu menuMain;
 
-    arquivoIng = fopen("Ing.txt", "r");
-    arquivoPiz = fopen("Piz.txt", "r");
+    arquivoIng = fopen("dados/Ing.txt", "r");
+    arquivoPiz = fopen("dados/Piz.txt", "r");
 
     char escolha = '*';
 
@@ -89,14 +89,14 @@ int main()
         escolher(escolha, &listaIng, &listaPizza, &tamIng, &tamPiz, menuMain);
     }
 
-    arquivoIng = fopen("Ing.txt", "w");
+    arquivoIng = fopen("dados/Ing.txt", "w");
     if (arquivoIng != NULL && listaIng != NULL && tamIng > 0) {
         fwrite(listaIng, sizeof(ingrediente), tamIng, arquivoIng);
         fclose(arquivoIng);
         printf("\nDados de ingredientes exportados com sucesso!\n");
     }
 
-    arquivoPiz = fopen("Piz.txt", "w");
+    arquivoPiz = fopen("dados/Piz.txt", "w");
     if (arquivoPiz != NULL && listaPizza != NULL && tamPiz > 0) {
         fwrite(listaPizza, sizeof(pizzas), tamPiz, arquivoPiz);
         fclose(arquivoPiz);
