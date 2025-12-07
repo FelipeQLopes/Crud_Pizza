@@ -1,7 +1,7 @@
-#include "../headers/pizza.h"
-#include "../headers/ingrediente.h"
-#include "../headers/menu.h"
-#include "../headers/pre_processamento.h"
+#include "../Headers/pizza.h"
+#include "../Headers/ingrediente.h"
+#include "../Headers/menu.h"
+#include "../Headers/pre_processamento.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -77,7 +77,9 @@ void menuOperacao(menu menu){
 void menuItem(menu menu){
     menu.item[0] = '\0';
     menuCriar(menu);
-    printf("\n| I - Ingredientes                       |");
+    if(menu.operacao[0] != 'V'){ 
+        printf("\n| I - Ingredientes                       |");
+    }
     printf("\n| P - Pizzas                             |");
     printf("\n| S - Sair                               |");
     printf("\n|----------------------------------------|");

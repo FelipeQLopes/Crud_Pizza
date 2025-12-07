@@ -19,6 +19,6 @@ void AddPizza(pizzas** listaPizza, int* tamPiz, ingrediente* listaIng, int* tamI
 int ReadPizza(int* tamPiz, pizzas** listaPizza);
 void UpdatePizzas(pizzas* piz, ingrediente *listaIng, int *tamIng);
 void DeletePizzas(pizzas** listaPizza, int* tamPiz);
-void venderPizza(pizzas** listaPizza, int* tamPiz, ingrediente* listaIng, int* tamIng);
+int venderPizza(pizzas* piz, ingrediente *listaIng, int *tamIng);
 
 #endif

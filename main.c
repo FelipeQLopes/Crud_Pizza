@@ -2,10 +2,10 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
-#include "headers/pre_processamento.h"
-#include "headers/ingrediente.h"
-#include "headers/pizza.h"
-#include "headers/menu.h"
+#include "Headers/pre_processamento.h"
+#include "Headers/ingrediente.h"
+#include "Headers/pizza.h"
+#include "Headers/menu.h"
 
 void escolher(char escolha1, ingrediente **listaIng, pizzas **listaPizza, int *tamIng, int *tamPiz, menu menuMain);
 
@@ -115,6 +115,7 @@ void escolher(char escolha1, ingrediente **listaIng, pizzas **listaPizza, int *t
     char x;
     int idUpdate;
     int idDelete;
+    int idVenda;
 
     menuItem(menuMain);
     scanf(" %c", &escolha2);
@@ -187,7 +188,7 @@ void escolher(char escolha1, ingrediente **listaIng, pizzas **listaPizza, int *t
         }
         else if (escolha2 == 'P')
         {
-            printf("Você quer ver as Pizzas antes? [ S/N ]\n");
+            printf("| Você quer ver as Pizzas antes? [ S/N ]\n| ");
             scanf(" %c", &x);
             getchar();
             toupper(x) == 'S' ? ReadPizza(tamPiz, listaPizza) : 0;
@@ -205,7 +206,24 @@ void escolher(char escolha1, ingrediente **listaIng, pizzas **listaPizza, int *t
         }
         if (escolha2 == 'P')
         {
-            venderPizza(listaPizza, tamPiz, *listaIng, tamIng);
+            printf("| Você quer ver as Pizzas antes? [ S/N ]\n| ");
+            scanf(" %c", &x);
+            getchar();
+            toupper(x) == 'S' ? ReadPizza(tamPiz, listaPizza) : 0;
+            printf("| Escolha o id da pizza para vender:\n| ");
+            scanf("%d", &idVenda);
+            getchar();
+            if(*tamPiz >= idVenda){
+                if(venderPizza(&(*listaPizza)[idVenda], *listaIng, tamIng) == 1){
+                    for(int i = idVenda; i < *tamPiz; i++){
+                        (*listaPizza)[i] = (*listaPizza)[i+1];
+                    }
+                    (*tamPiz)--;
+                }
+            }else{
+                printf("| ID inválido");
+            }
+            
         }
 
         break;

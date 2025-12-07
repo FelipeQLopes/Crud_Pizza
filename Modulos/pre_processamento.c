@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../headers/pre_processamento.h"
+#include "../Headers/pre_processamento.h"
 
 void limpar_console(){
     #ifdef _WIN32

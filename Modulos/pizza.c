@@ -1,6 +1,6 @@
-#include "../headers/pizza.h"
-#include "../headers/ingrediente.h"
-#include "../headers/menu.h"
+#include "../Headers/pizza.h"
+#include "../Headers/ingrediente.h"
+#include "../Headers/menu.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -109,7 +109,7 @@ int ReadPizza(int* tamPiz, pizzas **listaPizza)
         printf("\n|  Pressione [ ENTER ] para continuar.   |");
         printf("\n|----------------------------------------|\n ");
         getchar();
-        
+
     }else{
 
         printf("\n|----------------------------------------|");
@@ -263,7 +263,7 @@ void DeletePizzas(pizzas **listaPizza, int *tamPiz)
     getchar();
 }
 
-void venderPizza(pizzas **listaPizza, int *tamPiz, ingrediente *listaIng, int *tamIng)
+int venderPizza(pizzas* piz, ingrediente *listaIng, int *tamIng)
 {
     menuPiz.operacao[0] = 'V';
     menuPiz.item[0] = 'P';
@@ -271,48 +271,44 @@ void venderPizza(pizzas **listaPizza, int *tamPiz, ingrediente *listaIng, int *t
     int idVender, escolhaIng;
     float soma = 0;
 
-    printf("\nVoce esta vendendo uma pizza:\n");
-
-    ReadPizza(tamPiz, listaPizza);
-
-    printf("Escolha o ID da Pizza que voce quer vender:\n");
-    scanf("%d", &idVender);
-
-    if (idVender < 0 || idVender >= *tamPiz)
-    {
-        printf("| ID invalido");
-        return;
-    }
-
-    printf("\nVoce quer extra de ingredientes a essa pizza? Isso vai incrementar o preco dela (S/N)\n");
+    menuCriar(menuPiz);
+    printf("\n| Quer algum Ingrediente extra? [ S/N ]  |\n| ");
     scanf(" %c", &resposta);
     getchar();
     resposta = toupper(resposta);
 
     if (resposta == 'S')
     {
-
-        printf("\nEscolha o ID do ingrediente: ");
+        ReadIngredientes(tamIng, listaIng, menuPiz);
+        printf("| Digite um ID inválido para concluir    |");
+        printf("\n|    Escolha os IDs dos Ingredientes:    |\n| ");
         scanf("%d", &escolhaIng);
 
-        while (escolhaIng > 0 && escolhaIng <= *tamIng)
+        while (escolhaIng >= 0 && escolhaIng <= *tamIng)
         {
-
             soma += listaIng[escolhaIng].preco;
-            printf("\nEscolha o ID do ingrediente: ");
+            printf("| ");
             scanf("%d", &escolhaIng);
+            getchar();
         }
     }
 
-    printf("\nO Preco final da pizza %-25s eh R$ %-5.2f\n", (*listaPizza)[idVender].nome, (*listaPizza)[idVender].preco + soma);
+    printf("| Vender Pizza: %-20s     |", (*piz).nome);
+    printf("\n| Por R$ %-6.2f [ S/N ]                  |", (*piz).preco + soma);
+    printf("\n|----------------------------------------|\n| ");
+    scanf("%c", &resposta);
+    resposta = toupper(resposta);
+    getchar();
 
-    for (int i = idVender; i < *tamPiz - 1; i++)
-    {
-        (*listaPizza)[i] = (*listaPizza)[i + 1];
+    if(resposta == 'S'){
+        printf("|----------------------------------------|\n");
+        printf("|       Pizza Vendida com sucesso!       |\n");
+        printf("|                                        |\n");
+        printf("|  Pressione [ ENTER ] para continuar.   |\n");
+        printf("|----------------------------------------|\n ");
+        getchar();
+        return 1;
     }
 
-    (*tamPiz)--;
-    *listaPizza = realloc(*listaPizza, (*tamPiz) * sizeof(pizzas));
-
-    printf("\nPizza vendida com sucesso!\n");
+    return 0;
 }

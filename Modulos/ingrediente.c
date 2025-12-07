@@ -1,6 +1,6 @@
-#include "../headers/pizza.h"
-#include "../headers/ingrediente.h"
-#include "../headers/menu.h"
+#include "../Headers/pizza.h"
+#include "../Headers/ingrediente.h"
+#include "../Headers/menu.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
